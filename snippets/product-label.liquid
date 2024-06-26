@@ -1,0 +1,329 @@
+{%- comment -%}
+  Parameters:
+  - product {Object} - Product object.
+  - variant {Object} - Variant object (for use on Product Pages for example)
+  - is_product_card {Boolean} - Whether the label is on a card or not
+  - limit {Number} - The number of product labels to show
+
+  Usage:
+  {%- render 'product-label', product: product, variant: variant, is_product_card: false, limit: 99 -%}
+{%- endcomment -%}
+
+{%- capture product_label -%}
+  {%- assign label_count = 0 -%}
+
+  {%- if label_count < limit and settings.show_custom_label and product.metafields.custom.availability != blank -%}
+    {%- assign label_count = label_count | plus: 1 -%}
+    <div class="product-label-wrapper flex{% if settings.product_label_card_position contains "end" %} justify-end{% endif %}">
+       {%- if  template == 'product' -%}
+           {% assign currInventoryLevel = variant.inventory_quantity %}
+           {% else %}
+        {% assign currInventoryLevel = product.selected_or_first_available_variant.inventory_quantity %}
+
+{% endif %}
+    {% if currInventoryLevel > 0 %}
+ <span class="product-label product-label--custom" style="background-color: #E1f3f4;color :#62B6BA;font-weight: 600; ">
+  <svg style ="margin:0px 5px -4px 2px;"  width="20" height="20"  viewBox="0 0 31 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.375 5.375V17.875L18.375 22.25L28.375 17.875V5.375" stroke="#61B6BA" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.375 5.375L18.375 9.75L28.375 5.375" stroke="#61B6BA" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M13.375 3.1875L23.375 7.60125V11.625" stroke="#61B6BA" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.375 5.375L18.375 1L28.375 5.375" stroke="#61B6BA" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0.875 13.0649L0.93375 13.0924L5.875 15.3749" stroke="#61B6BA" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1.75781 9.09766L5.87531 11.0002" stroke="#61B6BA" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.58105 5.10352L5.8748 6.62477" stroke="#61B6BA" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18.375 9.75V22.25" stroke="#61B6BA" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<defs>
+<clipPath id="clip0_1073_508">
+<rect width="30" height="30" fill="white" transform="translate(0.5)"/>
+</clipPath>
+</defs> </svg>In Stock
+      </span>
+         {% else %}
+
+        <span  class="product-label product-label--custom" style="background-color: #fff8d0; color : #BFA30F;font-weight: 600; ">
+         <svg  style ="margin-right:5px;"  width="20" height="20" viewBox="0 0 34 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.1963 9.375V21.875L20.1963 26.25L30.1963 21.875V9.375" stroke="#BFA30F" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.1963 9.375L20.1963 13.75L30.1963 9.375" stroke="#BFA30F" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15.1963 7.1875L25.1963 11.6013V15.625" stroke="#BFA30F" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.1963 9.375L20.1963 5L30.1963 9.375" stroke="#BFA30F" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.69629 17.0649L2.75504 17.0924L7.69629 19.3749" stroke="#BFA30F" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3.5791 13.0977L7.6966 15.0002" stroke="#BFA30F" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.40234 9.10352L7.69609 10.6248" stroke="#BFA30F" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M20.1963 13.75V26.25" stroke="#BFA30F" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31.4365 18.512C31.798 19.1145 32.4004 19.3956 33.043 19.3153C33.1634 19.6767 33.2036 20.1185 33.1634 20.5201C33.1634 20.9217 33.0831 21.3233 33.0028 21.7249C32.3602 21.6446 31.7177 21.9659 31.3964 22.5281C31.0751 23.0904 31.1554 23.8133 31.5169 24.2952C30.9546 24.8574 30.2317 25.259 29.4285 25.5C29.1875 24.8976 28.6253 24.496 27.9426 24.496C27.2598 24.496 26.6976 24.9378 26.4566 25.5C25.6936 25.259 24.9707 24.8574 24.3683 24.2952C24.7699 23.8133 24.81 23.0904 24.4887 22.5281C24.1273 21.9257 23.5249 21.6446 22.8823 21.7249C22.7618 21.3635 22.7217 20.9217 22.7217 20.5201C22.7217 20.1185 22.802 19.7169 22.8823 19.3153C23.5249 19.3956 24.1675 19.0743 24.4887 18.512C24.8502 17.9498 24.7699 17.2269 24.4084 16.7048C24.9707 16.1426 25.6936 15.741 26.4968 15.5C26.7377 16.1024 27.3 16.504 27.9827 16.504C28.6655 16.504 29.2277 16.1024 29.4687 15.5402C30.2317 15.7811 30.9546 16.1827 31.557 16.745C31.1554 17.2269 31.1153 17.9498 31.4365 18.512ZM29.2781 20.5653C29.2781 21.2557 28.7184 21.8153 28.0281 21.8153C27.3377 21.8153 26.7781 21.2557 26.7781 20.5653C26.7781 19.875 27.3377 19.3153 28.0281 19.3153C28.7184 19.3153 29.2781 19.875 29.2781 20.5653Z" fill="#BFA30F"/>
+<path d="M33.043 19.3153L33.4224 19.1888C33.3621 19.0079 33.1826 18.8947 32.9934 18.9183L33.043 19.3153ZM31.4365 18.512L31.0892 18.7105L31.0935 18.7178L31.4365 18.512ZM33.1634 20.5201L32.7654 20.4803C32.7641 20.4935 32.7634 20.5068 32.7634 20.5201H33.1634ZM33.0028 21.7249L32.9532 22.1218C33.1612 22.1478 33.3539 22.0089 33.395 21.8033L33.0028 21.7249ZM31.3964 22.5281L31.0491 22.3297V22.3297L31.3964 22.5281ZM31.5169 24.2952L31.7997 24.578C31.9405 24.4373 31.9563 24.2144 31.8369 24.0552L31.5169 24.2952ZM29.4285 25.5L29.0571 25.6486C29.134 25.8409 29.3451 25.9426 29.5434 25.8831L29.4285 25.5ZM26.4566 25.5L26.3362 25.8814C26.5322 25.9433 26.7433 25.8465 26.8243 25.6576L26.4566 25.5ZM24.3683 24.2952L24.061 24.0391C23.9251 24.2021 23.9402 24.4428 24.0953 24.5876L24.3683 24.2952ZM24.4887 22.5281L24.8361 22.3296L24.8317 22.3223L24.4887 22.5281ZM22.8823 21.7249L22.5028 21.8514C22.5631 22.0323 22.7427 22.1455 22.9319 22.1218L22.8823 21.7249ZM22.8823 19.3153L22.9319 18.9183C22.724 18.8924 22.5312 19.0313 22.4901 19.2368L22.8823 19.3153ZM24.4887 18.512L24.1523 18.2957C24.1485 18.3016 24.1449 18.3076 24.1415 18.3136L24.4887 18.512ZM24.4084 16.7048L24.1256 16.422C23.9889 16.5587 23.9695 16.7736 24.0795 16.9325L24.4084 16.7048ZM26.4968 15.5L26.8682 15.3514C26.7912 15.1591 26.5802 15.0574 26.3818 15.1169L26.4968 15.5ZM29.4687 15.5402L29.5891 15.1587C29.3931 15.0968 29.182 15.1936 29.101 15.3826L29.4687 15.5402ZM31.557 16.745L31.8643 17.0011C32.0001 16.838 31.9851 16.5973 31.8299 16.4526L31.557 16.745ZM32.9934 18.9183C32.51 18.9788 32.0606 18.7747 31.7795 18.3063L31.0935 18.7178C31.5354 19.4542 32.2907 19.8124 33.0926 19.7122L32.9934 18.9183ZM33.5615 20.5599C33.6065 20.1099 33.5631 19.6106 33.4224 19.1888L32.6635 19.4418C32.7638 19.7428 32.8008 20.1271 32.7654 20.4803L33.5615 20.5599ZM33.395 21.8033C33.4739 21.409 33.5634 20.9681 33.5634 20.5201H32.7634C32.7634 20.8753 32.6923 21.2376 32.6106 21.6465L33.395 21.8033ZM31.7437 22.7266C31.9848 22.3045 32.4709 22.0615 32.9532 22.1218L33.0524 21.328C32.2496 21.2276 31.4505 21.6272 31.0491 22.3297L31.7437 22.7266ZM31.8369 24.0552C31.564 23.6914 31.5073 23.1403 31.7437 22.7266L31.0491 22.3297C30.6429 23.0404 30.7468 23.9351 31.1969 24.5352L31.8369 24.0552ZM29.5434 25.8831C30.3995 25.6263 31.1834 25.1943 31.7997 24.578L31.234 24.0123C30.7258 24.5206 30.0639 24.8918 29.3136 25.1169L29.5434 25.8831ZM27.9426 24.896C28.4577 24.896 28.8754 25.1942 29.0571 25.6486L29.7999 25.3514C29.4997 24.601 28.7929 24.096 27.9426 24.096V24.896ZM26.8243 25.6576C27.0104 25.2233 27.4396 24.896 27.9426 24.896V24.096C27.0801 24.096 26.3848 24.6522 26.089 25.3424L26.8243 25.6576ZM24.0953 24.5876C24.7449 25.1939 25.5212 25.6241 26.3362 25.8814L26.5771 25.1186C25.8659 24.894 25.1964 24.521 24.6412 24.0028L24.0953 24.5876ZM24.1415 22.7266C24.3875 23.1572 24.3461 23.6969 24.061 24.0391L24.6756 24.5513C25.1936 23.9296 25.2325 23.0235 24.836 22.3297L24.1415 22.7266ZM22.9319 22.1218C23.4152 22.0614 23.8647 22.2655 24.1458 22.7339L24.8317 22.3223C24.3899 21.5859 23.6345 21.2278 22.8327 21.328L22.9319 22.1218ZM22.3217 20.5201C22.3217 20.9407 22.3628 21.4314 22.5028 21.8514L23.2618 21.5984C23.1608 21.2955 23.1217 20.9026 23.1217 20.5201H22.3217ZM22.4901 19.2368C22.4112 19.6312 22.3217 20.0721 22.3217 20.5201H23.1217C23.1217 20.1649 23.1928 19.8025 23.2746 19.3937L22.4901 19.2368ZM24.1415 18.3136C23.9003 18.7356 23.4143 18.9786 22.9319 18.9183L22.8327 19.7122C23.6355 19.8125 24.4346 19.413 24.836 18.7105L24.1415 18.3136ZM24.0795 16.9325C24.3665 17.347 24.4108 17.8935 24.1523 18.2957L24.8252 18.7284C25.2895 18.0061 25.1733 17.1068 24.7373 16.4771L24.0795 16.9325ZM26.3818 15.1169C25.5258 15.3737 24.7419 15.8057 24.1256 16.422L24.6913 16.9877C25.1995 16.4794 25.8614 16.1082 26.6117 15.8831L26.3818 15.1169ZM27.9827 16.104C27.4676 16.104 27.0499 15.8058 26.8682 15.3514L26.1254 15.6486C26.4256 16.399 27.1324 16.904 27.9827 16.904V16.104ZM29.101 15.3826C28.9218 15.8007 28.5022 16.104 27.9827 16.104V16.904C28.8287 16.904 29.5336 16.4041 29.8363 15.6977L29.101 15.3826ZM31.8299 16.4526C31.1804 15.8463 30.4041 15.4161 29.5891 15.1587L29.3482 15.9216C30.0594 16.1462 30.7289 16.5192 31.2841 17.0374L31.8299 16.4526ZM31.7838 18.3136C31.5378 17.883 31.5792 17.3432 31.8643 17.0011L31.2497 16.4889C30.7317 17.1106 30.6928 18.0166 31.0892 18.7105L31.7838 18.3136ZM28.0281 22.2153C28.9393 22.2153 29.6781 21.4766 29.6781 20.5653H28.8781C28.8781 21.0347 28.4975 21.4153 28.0281 21.4153V22.2153ZM26.3781 20.5653C26.3781 21.4766 27.1168 22.2153 28.0281 22.2153V21.4153C27.5586 21.4153 27.1781 21.0347 27.1781 20.5653H26.3781ZM28.0281 18.9153C27.1168 18.9153 26.3781 19.654 26.3781 20.5653H27.1781C27.1781 20.0959 27.5586 19.7153 28.0281 19.7153V18.9153ZM29.6781 20.5653C29.6781 19.654 28.9393 18.9153 28.0281 18.9153V19.7153C28.4975 19.7153 28.8781 20.0959 28.8781 20.5653H29.6781Z" fill="#E1F3F4"/>
+</svg>
+        Made to Order          
+    </span>  
+    {%- endif -%}
+
+    </div>
+  {%- endif -%}
+<div id="collection-in-stock" >
+  <span class="product-label product-label--custom" style="background-color: #E1f3f4;color :#62B6BA;font-weight: 600; display:none;">
+  <svg style ="margin:0px 5px -4px 2px;"  width="20" height="20"  viewBox="0 0 31 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.375 5.375V17.875L18.375 22.25L28.375 17.875V5.375" stroke="#61B6BA" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.375 5.375L18.375 9.75L28.375 5.375" stroke="#61B6BA" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M13.375 3.1875L23.375 7.60125V11.625" stroke="#61B6BA" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.375 5.375L18.375 1L28.375 5.375" stroke="#61B6BA" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0.875 13.0649L0.93375 13.0924L5.875 15.3749" stroke="#61B6BA" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1.75781 9.09766L5.87531 11.0002" stroke="#61B6BA" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.58105 5.10352L5.8748 6.62477" stroke="#61B6BA" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18.375 9.75V22.25" stroke="#61B6BA" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<defs>
+<clipPath id="clip0_1073_508">
+<rect width="30" height="30" fill="white" transform="translate(0.5)"/>
+</clipPath>
+</defs> </svg>In Stock
+      </span>
+</div>
+  <div id="collection-made-to-order">
+        <span  class="product-label product-label--custom" style="background-color: #fff8d0; color : #BFA30F;font-weight: 600; display:none;">
+         <svg  style ="margin-right:5px;"  width="20" height="20" viewBox="0 0 34 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.1963 9.375V21.875L20.1963 26.25L30.1963 21.875V9.375" stroke="#BFA30F" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.1963 9.375L20.1963 13.75L30.1963 9.375" stroke="#BFA30F" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15.1963 7.1875L25.1963 11.6013V15.625" stroke="#BFA30F" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.1963 9.375L20.1963 5L30.1963 9.375" stroke="#BFA30F" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.69629 17.0649L2.75504 17.0924L7.69629 19.3749" stroke="#BFA30F" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3.5791 13.0977L7.6966 15.0002" stroke="#BFA30F" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.40234 9.10352L7.69609 10.6248" stroke="#BFA30F" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M20.1963 13.75V26.25" stroke="#BFA30F" stroke-width="1.7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31.4365 18.512C31.798 19.1145 32.4004 19.3956 33.043 19.3153C33.1634 19.6767 33.2036 20.1185 33.1634 20.5201C33.1634 20.9217 33.0831 21.3233 33.0028 21.7249C32.3602 21.6446 31.7177 21.9659 31.3964 22.5281C31.0751 23.0904 31.1554 23.8133 31.5169 24.2952C30.9546 24.8574 30.2317 25.259 29.4285 25.5C29.1875 24.8976 28.6253 24.496 27.9426 24.496C27.2598 24.496 26.6976 24.9378 26.4566 25.5C25.6936 25.259 24.9707 24.8574 24.3683 24.2952C24.7699 23.8133 24.81 23.0904 24.4887 22.5281C24.1273 21.9257 23.5249 21.6446 22.8823 21.7249C22.7618 21.3635 22.7217 20.9217 22.7217 20.5201C22.7217 20.1185 22.802 19.7169 22.8823 19.3153C23.5249 19.3956 24.1675 19.0743 24.4887 18.512C24.8502 17.9498 24.7699 17.2269 24.4084 16.7048C24.9707 16.1426 25.6936 15.741 26.4968 15.5C26.7377 16.1024 27.3 16.504 27.9827 16.504C28.6655 16.504 29.2277 16.1024 29.4687 15.5402C30.2317 15.7811 30.9546 16.1827 31.557 16.745C31.1554 17.2269 31.1153 17.9498 31.4365 18.512ZM29.2781 20.5653C29.2781 21.2557 28.7184 21.8153 28.0281 21.8153C27.3377 21.8153 26.7781 21.2557 26.7781 20.5653C26.7781 19.875 27.3377 19.3153 28.0281 19.3153C28.7184 19.3153 29.2781 19.875 29.2781 20.5653Z" fill="#BFA30F"/>
+<path d="M33.043 19.3153L33.4224 19.1888C33.3621 19.0079 33.1826 18.8947 32.9934 18.9183L33.043 19.3153ZM31.4365 18.512L31.0892 18.7105L31.0935 18.7178L31.4365 18.512ZM33.1634 20.5201L32.7654 20.4803C32.7641 20.4935 32.7634 20.5068 32.7634 20.5201H33.1634ZM33.0028 21.7249L32.9532 22.1218C33.1612 22.1478 33.3539 22.0089 33.395 21.8033L33.0028 21.7249ZM31.3964 22.5281L31.0491 22.3297V22.3297L31.3964 22.5281ZM31.5169 24.2952L31.7997 24.578C31.9405 24.4373 31.9563 24.2144 31.8369 24.0552L31.5169 24.2952ZM29.4285 25.5L29.0571 25.6486C29.134 25.8409 29.3451 25.9426 29.5434 25.8831L29.4285 25.5ZM26.4566 25.5L26.3362 25.8814C26.5322 25.9433 26.7433 25.8465 26.8243 25.6576L26.4566 25.5ZM24.3683 24.2952L24.061 24.0391C23.9251 24.2021 23.9402 24.4428 24.0953 24.5876L24.3683 24.2952ZM24.4887 22.5281L24.8361 22.3296L24.8317 22.3223L24.4887 22.5281ZM22.8823 21.7249L22.5028 21.8514C22.5631 22.0323 22.7427 22.1455 22.9319 22.1218L22.8823 21.7249ZM22.8823 19.3153L22.9319 18.9183C22.724 18.8924 22.5312 19.0313 22.4901 19.2368L22.8823 19.3153ZM24.4887 18.512L24.1523 18.2957C24.1485 18.3016 24.1449 18.3076 24.1415 18.3136L24.4887 18.512ZM24.4084 16.7048L24.1256 16.422C23.9889 16.5587 23.9695 16.7736 24.0795 16.9325L24.4084 16.7048ZM26.4968 15.5L26.8682 15.3514C26.7912 15.1591 26.5802 15.0574 26.3818 15.1169L26.4968 15.5ZM29.4687 15.5402L29.5891 15.1587C29.3931 15.0968 29.182 15.1936 29.101 15.3826L29.4687 15.5402ZM31.557 16.745L31.8643 17.0011C32.0001 16.838 31.9851 16.5973 31.8299 16.4526L31.557 16.745ZM32.9934 18.9183C32.51 18.9788 32.0606 18.7747 31.7795 18.3063L31.0935 18.7178C31.5354 19.4542 32.2907 19.8124 33.0926 19.7122L32.9934 18.9183ZM33.5615 20.5599C33.6065 20.1099 33.5631 19.6106 33.4224 19.1888L32.6635 19.4418C32.7638 19.7428 32.8008 20.1271 32.7654 20.4803L33.5615 20.5599ZM33.395 21.8033C33.4739 21.409 33.5634 20.9681 33.5634 20.5201H32.7634C32.7634 20.8753 32.6923 21.2376 32.6106 21.6465L33.395 21.8033ZM31.7437 22.7266C31.9848 22.3045 32.4709 22.0615 32.9532 22.1218L33.0524 21.328C32.2496 21.2276 31.4505 21.6272 31.0491 22.3297L31.7437 22.7266ZM31.8369 24.0552C31.564 23.6914 31.5073 23.1403 31.7437 22.7266L31.0491 22.3297C30.6429 23.0404 30.7468 23.9351 31.1969 24.5352L31.8369 24.0552ZM29.5434 25.8831C30.3995 25.6263 31.1834 25.1943 31.7997 24.578L31.234 24.0123C30.7258 24.5206 30.0639 24.8918 29.3136 25.1169L29.5434 25.8831ZM27.9426 24.896C28.4577 24.896 28.8754 25.1942 29.0571 25.6486L29.7999 25.3514C29.4997 24.601 28.7929 24.096 27.9426 24.096V24.896ZM26.8243 25.6576C27.0104 25.2233 27.4396 24.896 27.9426 24.896V24.096C27.0801 24.096 26.3848 24.6522 26.089 25.3424L26.8243 25.6576ZM24.0953 24.5876C24.7449 25.1939 25.5212 25.6241 26.3362 25.8814L26.5771 25.1186C25.8659 24.894 25.1964 24.521 24.6412 24.0028L24.0953 24.5876ZM24.1415 22.7266C24.3875 23.1572 24.3461 23.6969 24.061 24.0391L24.6756 24.5513C25.1936 23.9296 25.2325 23.0235 24.836 22.3297L24.1415 22.7266ZM22.9319 22.1218C23.4152 22.0614 23.8647 22.2655 24.1458 22.7339L24.8317 22.3223C24.3899 21.5859 23.6345 21.2278 22.8327 21.328L22.9319 22.1218ZM22.3217 20.5201C22.3217 20.9407 22.3628 21.4314 22.5028 21.8514L23.2618 21.5984C23.1608 21.2955 23.1217 20.9026 23.1217 20.5201H22.3217ZM22.4901 19.2368C22.4112 19.6312 22.3217 20.0721 22.3217 20.5201H23.1217C23.1217 20.1649 23.1928 19.8025 23.2746 19.3937L22.4901 19.2368ZM24.1415 18.3136C23.9003 18.7356 23.4143 18.9786 22.9319 18.9183L22.8327 19.7122C23.6355 19.8125 24.4346 19.413 24.836 18.7105L24.1415 18.3136ZM24.0795 16.9325C24.3665 17.347 24.4108 17.8935 24.1523 18.2957L24.8252 18.7284C25.2895 18.0061 25.1733 17.1068 24.7373 16.4771L24.0795 16.9325ZM26.3818 15.1169C25.5258 15.3737 24.7419 15.8057 24.1256 16.422L24.6913 16.9877C25.1995 16.4794 25.8614 16.1082 26.6117 15.8831L26.3818 15.1169ZM27.9827 16.104C27.4676 16.104 27.0499 15.8058 26.8682 15.3514L26.1254 15.6486C26.4256 16.399 27.1324 16.904 27.9827 16.904V16.104ZM29.101 15.3826C28.9218 15.8007 28.5022 16.104 27.9827 16.104V16.904C28.8287 16.904 29.5336 16.4041 29.8363 15.6977L29.101 15.3826ZM31.8299 16.4526C31.1804 15.8463 30.4041 15.4161 29.5891 15.1587L29.3482 15.9216C30.0594 16.1462 30.7289 16.5192 31.2841 17.0374L31.8299 16.4526ZM31.7838 18.3136C31.5378 17.883 31.5792 17.3432 31.8643 17.0011L31.2497 16.4889C30.7317 17.1106 30.6928 18.0166 31.0892 18.7105L31.7838 18.3136ZM28.0281 22.2153C28.9393 22.2153 29.6781 21.4766 29.6781 20.5653H28.8781C28.8781 21.0347 28.4975 21.4153 28.0281 21.4153V22.2153ZM26.3781 20.5653C26.3781 21.4766 27.1168 22.2153 28.0281 22.2153V21.4153C27.5586 21.4153 27.1781 21.0347 27.1781 20.5653H26.3781ZM28.0281 18.9153C27.1168 18.9153 26.3781 19.654 26.3781 20.5653H27.1781C27.1781 20.0959 27.5586 19.7153 28.0281 19.7153V18.9153ZM29.6781 20.5653C29.6781 19.654 28.9393 18.9153 28.0281 18.9153V19.7153C28.4975 19.7153 28.8781 20.0959 28.8781 20.5653H29.6781Z" fill="#E1F3F4"/>
+</svg>
+        Made to Order          
+    </span> 
+  </div>
+  {%- if label_count < limit and product.template_suffix contains 'preorder' -%}
+    {%- assign label_count = label_count | plus: 1 -%}
+    <div class="product-label-wrapper flex{% if settings.product_label_card_position contains "end" %} justify-end{% endif %}">
+      <span class="product-label product-label--preorder">
+        {% if settings.preorder_label_icon != "none" %}
+          {% render 'icon', icon: settings.preorder_label_icon, width: 14, height: 14 %}
+        {% endif %}
+        {{- 'products.product.preorder' | t -}}
+      </span>
+    </div>
+  {%- endif -%}
+
+  {%- if label_count < limit and settings.show_sold_out_label -%}
+    {%- if is_product_card and product.available == false -%}
+      {%- assign label_count = label_count | plus: 1 -%}
+      <div class="product-label-wrapper flex{% if settings.product_label_card_position contains "end" %} justify-end{% endif %}">
+        <span class="product-label product-label--sold-out">
+          {% if settings.sold_out_label_icon != "none" %}
+            {% render 'icon', icon: settings.sold_out_label_icon, width: 14, height: 14 %}
+          {% endif %}
+          {{ 'products.product.sold_out' | t }}
+        </span>
+      </div>
+    {%- elsif is_product_card == false and variant and variant.available == false -%}
+      {%- assign label_count = label_count | plus: 1 -%}
+      <div class="product-label-wrapper flex{% if settings.product_label_card_position contains "end" %} justify-end{% endif %}">
+        <span class="product-label product-label--sold-out">
+          {% if settings.sold_out_label_icon != "none" %}
+            {% render 'icon', icon: settings.sold_out_label_icon, width: 14, height: 14 %}
+          {% endif %}
+          {{ 'products.product.sold_out' | t }}
+        </span>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- if label_count < limit and settings.show_sale_label -%}
+    {%- liquid
+      assign discount = 0
+      if variant
+        if variant.price > 0
+          if settings.sale_label_type == 'percent'
+            assign discount = 1.0 | times: variant.price | divided_by: variant.compare_at_price
+            assign discount = 1.0 | minus: discount
+            assign discount = discount | times: 100.0 | round
+          else
+            assign discount = variant.compare_at_price | minus: variant.price
+          endif
+        endif
+      else
+        for variant in product.variants
+          if variant.compare_at_price > variant.price and variant.price > 0
+            if settings.sale_label_type == 'percent'
+              assign this_discount = 1.0 | times: variant.price | divided_by: variant.compare_at_price
+              assign this_discount = 1.0 | minus: this_discount
+              assign this_discount = this_discount | times: 100.0 | round
+              if this_discount > discount
+                assign discount = this_discount
+              endif
+            else
+              assign this_discount = variant.compare_at_price | minus: variant.price
+              if this_discount > discount
+                assign discount = this_discount
+              endif
+            endif
+          endif
+        endfor
+      endif
+    -%}
+    {%- if discount > 0 -%}
+      {%- liquid
+        if settings.sale_label_type == 'percent'
+          if variant
+            assign sale_label_text = 'products.product.percent_reduction' | t: amount: discount
+          else
+            assign sale_label_text = 'products.product.percent_reduction_up_to' | t: amount: discount
+          endif
+        elsif settings.sale_label_type == 'money'
+          assign discount_money = discount | money
+          if variant
+            assign sale_label_text = 'products.product.value_reduction_html' | t: amount: discount_money
+          else
+            assign sale_label_text = 'products.product.value_reduction_up_to_html' | t: amount: discount_money
+          endif
+        else
+          assign sale_label_text = 'products.product.sale' | t
+        endif
+        assign label_count = label_count | plus: 1
+      -%}
+      {%- if sale_label_text -%}
+        <div class="product-label-wrapper flex{% if settings.product_label_card_position contains "end" %} justify-end{% endif %}">
+          <span class="product-label product-label--sale">
+            {% if settings.sale_label_icon != "none" %}
+              {% render 'icon', icon: settings.sale_label_icon, width: 14, height: 14 %}
+            {% endif %}
+            {{ sale_label_text }}
+          </span>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- if label_count < limit and settings.show_new_label -%}
+    {%- liquid
+      assign showing_new_label = false
+
+      if settings.show_new_label_collection
+        assign collection_handles = settings.new_label_collections | map: 'handle'
+        for collection in product.collections
+          if collection_handles contains collection.handle
+            assign new_label_text = 'products.product.new' | t
+            assign showing_new_label = true
+            break
+          endif
+        endfor
+      endif
+
+      if settings.show_new_label_tag and showing_new_label == false
+        assign product_tags_lowercase = product.tags | join: ',' | downcase | split: ','
+        assign new_tag_lowercase = settings.new_label_tag | downcase
+        if product_tags_lowercase contains new_tag_lowercase
+          assign new_label_text = 'products.product.new' | t
+          assign showing_new_label = true
+        endif
+      endif
+
+      if settings.show_new_label_days and showing_new_label == false
+        assign now_s = 'now' | date: '%s' | plus: 0
+        assign pub_s = product.created_at | date: '%s' | plus: 0
+        assign diff_days = now_s | minus: pub_s | divided_by: 86400
+
+        if diff_days < settings.new_label_date_limit
+          assign new_label_text = 'products.product.new' | t
+        endif
+      endif
+    -%}
+    {%- if new_label_text -%}
+      {%- assign label_count = label_count | plus: 1 -%}
+      <div class="product-label-wrapper flex{% if settings.product_label_card_position contains "end" %} justify-end{% endif %}">
+        <span class="product-label product-label--new">
+          {% if settings.new_label_icon != "none" %}
+            {% render 'icon', icon: settings.new_label_icon, width: 14, height: 14 %}
+          {% endif %}
+          {{ new_label_text }}
+        </span>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- if product_label != blank -%}
+  <div class="product-label-container capitalize {% if position %} absolute {{ position }} {% endif %}">
+    {{- product_label -}}
+  </div>
+{%- endif -%}
+
+{% comment %}
+
+ if (totalReadyToDispatchUnits > 0) {
+            console.log("Collection label");
+            const stockLabel = document.getElementById('collection-in-stock');
+        stockLabel.style.display = 'block';
+    } else {
+       const mtoLabel = document.getElementById('collection-made-to-order');
+         mtoLabel.style.display = 'block';
+    }
+
+
+
+
+<script>
+    function getInventoryQuantities(variantId) {
+            const inventoryObject = allInventoryObjects.find(item => item.id == variantId);
+            if (!inventoryObject) {
+                console.error('Inventory object not found for the given variant ID');
+                return { ukInventoryLevel: 0, indiaInventoryLevel: 0 };
+            }
+
+            const ukLocation = inventoryObject.inventoryLevels.find(level => level.location === "Shop location");
+            const indiaLocation = inventoryObject.inventoryLevels.find(level => level.location === "Gurugram India");
+
+            const ukInventoryLevel = ukLocation ? ukLocation.quantity : 0;
+            const indiaInventoryLevel = indiaLocation ? indiaLocation.quantity : 0;
+
+            return {
+                ukInventoryLevel,
+                indiaInventoryLevel
+            };
+        }
+  async function getInventoryLevelUkIn(productId) {
+            const response = await fetch(`https://trampoline-admin-api.onrender.com/api/2024-04/inventory?productID=${productId}`);
+            const data = await response.json();
+          //  console.log("Fetched Inventory Levels:", data);
+            return data;
+        }
+          let allInventoryObjects = await getInventoryLevelUkIn({{product.id}});
+  let totalReadyToDispatchUnits = 0, total_InStockUnits = 0, totalAvailableUnits = 0;
+
+
+   async function updateVariantInventory(variantId) {
+           if(variantId == null){
+            variantId = {{product.selected_or_first_available_variant.id}};
+          }
+            let inventoryQuantities = getInventoryQuantities(variantId);
+            console.log("Inventory Quantities for variant", variantId, ":", inventoryQuantities);
+            ({ ukInventoryLevel: totalReadyToDispatchUnits, indiaInventoryLevel: total_InStockUnits } = inventoryQuantities);
+            totalAvailableUnits = totalReadyToDispatchUnits + total_InStockUnits;
+            console.log("Updated inventory for variant:", variantId, "Ready to Dispatch:", totalReadyToDispatchUnits, "In Stock:", total_InStockUnits, "Total Available:", totalAvailableUnits);
+        }
+
+   await updateVariantInventory({{product.selected_or_first_available_variant.id}});
+        processOrder(currentQty, totalReadyToDispatchUnits, total_InStockUnits);
+
+  function processOrder(value, inventory, inStock) {
+            const readyToDispatchLabel = document.getElementById('Ready_to_dispatch');
+            const inStockLabelC = document.getElementById('collection-in-stock');
+            const madeToOrderC = document.getElementById('collection-made-to-order');
+            let remainingValue = value;
+
+    if(total_InStockUnits>0){
+      inStockLabelC.style.display ="block";
+      madeToOrderC.style.display ="none";
+    }
+    else {
+       inStockLabelC.style.display ="none";
+      madeToOrderC.style.display ="block";
+    }
+
+  
+</script>
+
+  
+{% endcomment %}

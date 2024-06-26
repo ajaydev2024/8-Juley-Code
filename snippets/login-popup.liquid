@@ -1,0 +1,331 @@
+<div class="popup--container">
+  <div id="login-form">
+    <div class="section__header text-center form__heading">
+      <h1 class="h2 form__font-size">{{ 'customer.login.title' | t }}</h1>
+    </div>
+
+    {%- if recover_success == true -%}
+      <div class="alert reading-width mb-8 mx-auto bg-success-bg text-success-text" tabindex="-1" autofocus>
+        {{ 'customer.recover_password.success' | t }}
+      </div>
+    {%- endif -%}
+
+    {%- form 'customer_login', class: 'form form-width mx-auto cursor-auto', novalidate: 'novalidate' -%}
+      <input type="hidden" id="checkout_url" name="checkout_url" value="{{ canonical_url }}">
+      {%- if form.errors -%}
+        <div class="alert mb-8 bg-error-bg text-error-text" tabindex="-1" autofocus>
+          {{ form.errors | default_errors }}
+        </div>
+      {%- endif -%}
+
+      <div class="form__field mt-4 required">
+        <label class="label" for="customer-email">{{ 'customer.login.email' | t }}*</label>
+        <input
+          type="email"
+          class="input w-full"
+          id="customer-email"
+          name="customer[email]"
+          autocomplete="email"
+          {%- if form.errors contains 'form' %}
+            aria-invalid="true"
+          {%- endif %}
+          aria-required="true"
+          required
+        >
+      </div>
+
+      {%- if form.password_needed -%}
+        <div class="form__field mt-4 required">
+          <label class="label" for="customer-password">{{ 'customer.login.password' | t }}*</label>
+          <div class="login-password relative">
+            <input
+              type="password"
+              class="login-password__input input w-full"
+              id="customer-password"
+              name="customer[password]"
+              {%- if form.errors contains 'form' %}
+                aria-invalid="true"
+              {%- endif %}
+              aria-required="true"
+              required
+            >
+            <a
+              class="mt-2 login-password__recover-link link flex items-center absolute js-recover"
+              href="#recover"
+            >
+              {{- 'customer.login.forgot_password' | t -}}
+            </a>
+          </div>
+        </div>
+      {%- endif -%}
+
+      <div class="mt-10 pt-4">
+        <button
+          class="btn btn--primary w-full login__font-size"
+          onclick="performLogin()"
+        >
+          {{ 'customer.login.sign_in' | t }}
+        </button>
+      </div>
+
+      <p class="mt-8 mb-0 text-center">
+        {{ 'customer.login.new_customer' | t }}
+        {% comment %}   install a SureCust app to Redirect to Registration Form , i remove the Class js-register so that
+        JS code is not run on click on create account
+        <a class="link js-register" href="/account/register">{{ 'customer.login.create_account' | t }}</a>
+         {% endcomment %}
+                <a class="link" href="/account/register">{{ 'customer.login.create_account' | t }}</a>
+
+      </p>
+    {%- endform -%}
+  </div>
+
+  <div class="js-hidden" id="recover-form">
+    <div class="section__header reading-width text-center">
+      <h1 class="form__font-size">{{ 'customer.recover_password.title' | t }}</h1>
+      <p class="recover__font-size">{{ 'customer.recover_password.subtext' | t }}</p>
+    </div>
+
+    {%- form 'recover_customer_password', class: 'form form-width mx-auto cursor-auto' -%}
+      {%- assign recover_success = form.posted_successfully? -%}
+
+      <div class="form__field required">
+        <label class="label" for="recover-email">{{ 'customer.login.email' | t }}</label>
+        <input
+          type="email"
+          class="input w-full"
+          id="recover-email"
+          name="email"
+          autocomplete="email"
+          {%- if form.errors %}
+            aria-invalid="true"
+            aria-describedby="recover-email-error"
+            autofocus
+          {%- endif %}
+          aria-required="true"
+          required
+        >
+        {%- if form.errors -%}
+          <p class="form__field-error" id="recover-email-error">
+            {{ form.errors.messages.form }}
+          </p>
+        {%- endif -%}
+      </div>
+
+      <div class="mt-6">
+        <button class="btn btn--primary w-full">{{ 'customer.recover_password.submit' | t }}</button>
+      </div>
+
+      <p class="mt-8 text-center">
+        <a class="link js-login" href="#login">{{ 'customer.recover_password.cancel' | t }}</a>
+      </p>
+    {%- endform -%}
+  </div>
+
+  <div class="js-hidden" id="register-form">
+    <div class="section__header text-center form__heading">
+      <h1 class="h2 form__font-size">{{ 'customer.register.title' | t }}</h1>
+    </div>
+
+    {%- form 'create_customer', class: 'form form-width mx-auto register-customer__form' -%}
+      <div class="register_popup-error__message alert mb-4 bg-error-bg text-error-text hidden"></div>
+      {%- if form.errors -%}
+        <div class="alert mb-8 bg-error-bg text-error-text" tabindex="-1" autofocus>
+          <h2 class="h5 text-current">{{ 'contact.form.error_heading' | t }}</h2>
+          <ul class="styled-list">
+            {%- for field in form.errors -%}
+              <li>
+                {%- if field == 'form' -%}
+                  {{ form.errors.messages[field] }}
+                {%- else -%}
+                  <a class="link text-current" href="#register-{{ field }}">
+                    {{- form.errors.translated_fields[field] | capitalize }}
+                    {{ form.errors.messages[field] -}}
+                  </a>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+  
+      <div class="custom_error register_popup-error__message">
+        <p class="error_email hidden">Please enter valid email id</p>
+        <p class="error_number hidden">Please enter 8 digit number</p>
+      </div>
+  
+      <div class="input-container ">
+        <div class="form__field full_span">
+          <label class="label" for="register-first-name">Name</label>
+          <input
+            type="text"
+            class="input w-full"
+            id="register-first-name"
+            name="customer[first_name]"
+            {%- if form.first_name %}
+              value="{{ form.first_name }}"
+            {%- endif %}
+            autocomplete="given-name"
+          >
+        </div>
+  
+        <div class="form__field required">
+          <label class="label" for="company-name">company Name</label>
+          <input class="input w-full" id="company-name" type="text" required name="customer[note][companyName]">
+        </div>
+  
+        <div class="form__field required">
+          <label class="label" for="company-number">company Number</label>
+          <input
+            class="input w-full"
+            id="company-number"
+            type="text"
+          title="Enter minimum 8 characters, only letters and numbers"
+          pattern="[A-Za-z0-9]{8,}"
+            required
+            name="customer[note][companyNumber]"
+          >
+        </div>
+  
+        <div class="form__field required">
+          <label class="label" for="register-email">{{ 'customer.register.email' | t }}</label>
+          <input
+            type="email"
+            class="input w-full"
+            id="register-email"
+            name="customer[email]"
+            {%- if form.email %}
+              value="{{ form.email }}"
+            {%- endif %}
+            autocomplete="email"
+            {%- if form.errors contains 'email' %}
+              aria-invalid="true"
+              aria-describedby="register-email-error"
+            {%- endif %}
+            aria-required="true"
+            required
+          >
+          {%- if form.errors contains 'email' -%}
+            <p class="form__field-error" id="register-email-error">
+              {{ form.errors.translated_fields.email | capitalize }}
+              {{ form.errors.messages.email }}.
+            </p>
+          {%- endif -%}
+        </div>
+  
+        <div class="form__field required">
+          <label class="label" for="register-password">{{ 'customer.register.password' | t }}</label>
+          <input
+            type="password"
+            class="input w-full"
+            id="register-password"
+            name="customer[password]"
+            autocomplete="new-password"
+            {%- if form.errors contains 'password' %}
+              aria-invalid="true"
+              aria-describedby="register-password-error"
+            {%- endif %}
+            aria-required="true"
+            required
+          >
+          {%- if form.errors contains 'password' -%}
+            <p class="form__field-error" id="register-password-error">
+              {{ form.errors.translated_fields.password | capitalize }}
+              {{ form.errors.messages.password }}.
+            </p>
+          {%- endif -%}
+        </div>
+  
+       
+  
+        <div class="form__field">
+          <label class="label" for="mobile-number">Mobile Number</label>
+          <input class="input w-full" id="mobile-number" type="number" name="customer[note][mobileNumber]">
+        </div>
+  
+        <div class="form__field">
+          <label class="label" for="VAT-number">VAT Number</label>
+          <input class="input w-full" id="VAT-number" type="text" name="customer[note][VATNumber]">
+        </div>
+  
+        <div class="form__field required">
+          <label class="label" for="company-type">Business type</label>
+          <select
+            required
+            name="customer[note][Business Type]"
+            aria-label="Business Type"
+            class="input w-full"
+            aria-required="true"
+            id="company-type"
+            other_value="1"
+          >
+            <option value="" aria-required="true" aria-placeholder="Please Select">Please Select</option>
+            <option value="Brick &amp; mortar">Brick &amp; mortar</option>
+            <option value="Online only">Online only</option>
+            <option value="Brick &amp; mortar and Online">Brick &amp; mortar and Online</option>
+            <option value="Interior Designer">Interior Designer</option>
+            <option value="Contractor or Developer">Contractor or Developer</option>
+            <option value="Other (please specify)">Other (please specify)</option>
+          </select>
+        </div>
+  
+        <div class="form__field">
+          <label class="label" for="annual-sales">Annual sales</label>
+          <select
+            name="customer[note][Annual Sales]"
+            aria-label="Business Type"
+            class="input w-full"
+            aria-required="true"
+            id="annual-sales"
+            other_value="0"
+          >
+            <option value="" aria-placeholder="Please Select">Please Select</option>
+            <option value="£0 -  £50K">£0 - £50K</option>
+            <option value="£50K - £150K">£50K - £150K</option>
+            <option value="£150K - £500K">£150K - £500K</option>
+            <option value="£500K - £2M">£500K - £2M</option>
+            <option value="> £2M">&gt; £2M</option>
+          </select>
+        </div>
+  
+        <div class="form__field full_span">
+          <label class="label " for="message">message</label>
+          <textarea
+            class="input w-full"
+            id="message"
+            style="height: 80px"
+            name="customer[note][message]"
+            data-max="250"
+            aria-valuemax="250"
+            data-limiting="false"
+            aria-required="false"
+            aria-placeholder=""
+            placeholder=""
+          ></textarea>
+        </div>
+      </div>
+  
+      <div class="mt-6">
+        <button class="btn btn--primary w-full customer__registration">{{ 'customer.register.submit' | t }}</button>
+      </div>
+  
+      <p class="mt-8 mb-0 text-center">
+        {{ 'customer.register.have_account' | t }}
+        <a class="link" href="{{ routes.account_login_url }}">{{ 'customer.register.log_in' | t }}</a>
+      </p>
+    {%- endform -%}
+  </div>
+
+  {%- if shop.checkout.guest_login -%}
+    <h2 class="text-center mt-10">{{ 'customer.login.guest_title' | t }}</h2>
+
+    {%- form 'guest_login', class: 'form form-width mx-auto' -%}
+      <button class="btn btn--secondary w-full">{{ 'customer.login.guest_continue' | t }}</button>
+    {%- endform -%}
+  {%- endif -%}
+
+  <div class="" id="wholesale-form">
+    <div id="mgjfHov9Ptj5g5nwcOMSWg" class="pxFormGenerator" style="margin: 0 auto;"></div>
+  </div>
+</div>
+  

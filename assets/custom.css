@@ -1,0 +1,7 @@
+.card-link::after {
+    width: unset;
+}
+
+.pseudo_add_to_cart{
+    width: 100%;
+}

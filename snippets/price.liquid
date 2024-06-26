@@ -1,0 +1,111 @@
+{%- comment -%}
+  Parameters:
+  - product {Object} - Product object.
+  - class {String} - CSS Class (optional)
+  - use_variant {Boolean} - Use variant price instead of general (optional, default is false).
+
+  Usage:
+  {% render 'price', product: product %}
+{%- endcomment -%}
+{%- liquid
+  if use_variant
+    assign variant = product.selected_or_first_available_variant
+  else
+    assign use_variant = false
+    assign variant = product.variants | sort: 'price' | first
+  endif
+
+  if item_value
+    assign item = item.product
+  else
+    assign item_value = false
+    assign item = item.product | sort: 'price' | first
+  endif
+-%}
+
+<div class="new__functionality new-custom-price">
+  <div class="price__conatiner">
+    <div class="product-info__prices">
+      {% if product.compare_at_price > product.price %}
+        {% if customer %}
+          <strong class="product-info__compareprice price__current jj">
+            <span class="price-details__prefix">WSP</span
+            ><del class="variant_compare-price">{{- variant.compare_at_price | money_without_trailing_zeros -}}</del>
+          </strong>
+
+          <strong class="price__current">
+            <span class="price-details__prefix">WSP</span>
+            <span class="variant-selling_price">{{ variant.price | money_without_trailing_zeros }}</span>
+          </strong>
+        {% endif %}
+
+        <strong class="product-info__compareprice price__current">
+          <span class="price-details__prefix">RRP</span>
+          {% for p_variant in product.variants %}
+            <strong
+              class="price-details__prefix prodct-meta-rrp {% unless variant.id == p_variant.id %}hidden{% endunless %}"
+              data-vid="{{ p_variant.id }}"
+            >
+              {{- p_variant.metafields.custom.rrp.value | money_without_trailing_zeros -}}
+            </strong>
+          {% endfor %}
+        </strong>
+      {% else %}
+        {% if customer %}
+        <strong class="product-info__compareprice price__current hidden {% unless customer %}hidden{% endunless %}">
+          <span class="price-details__prefix">WSP</span
+          >
+           {% for p_variant in product.variants %}
+            <del
+              class="variant_compare-price prodct-meta-rrp {% unless variant.id == p_variant.id %}hidden{% endunless %}"
+              data-vid="{{ p_variant.id }}"
+            >
+               £{{- p_variant.metafields.custom.compare_wsp.value | replace : '.0'   -}}
+            </del>
+          {% endfor %}
+        </strong>
+
+        <strong class="price__current {% unless customer %}hidden{% endunless %}">
+          <span class="price-details__prefix">WSP</span>
+         {% for p_variant in product.variants %}
+            <span
+              class="variant-selling_price prodct-meta-rrp {% unless variant.id == p_variant.id %}hidden{% endunless %}"
+              data-vid="{{ p_variant.id }}"
+            >
+               £{{- p_variant.metafields.custom.price_wsp.value | replace : '.0' -}}
+            </span>
+          {% endfor %}
+        </strong>
+       {% endif %}
+        <strong class="price__current">
+          <span class="price-details__prefix">RRP</span>
+          {% for p_variant in product.variants %}
+            <span
+              class="price-details__prefix prodct-meta-rrp {% unless variant.id == p_variant.id %}hidden{% endunless %}"
+              data-vid="{{ p_variant.id }}"
+            >
+               {{- p_variant.metafields.custom.rrp.value | money_without_trailing_zeros -}}
+            </span>
+          {% endfor %}
+        </strong>
+      {% endif %}
+    </div>
+    {% unless customer %}
+      <div class="svg__hover" onclick="toggleBtn(event)">
+        <p class="lock-icon">
+          <svg
+            class="SVGIcon__StyledSvg-sc-6bkwzg-0 gdlDdm"
+            focusable="false"
+            viewBox="0 0 24 24"
+            aria-labelledby="titleAccess-:r7g:"
+            role="img"
+            fill="none"
+          >
+            <path d="M3.42871 9.42871H20.5716V23.143H3.42871V9.42871Z" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M18 9.42836V6.85693C18 5.26563 17.3679 3.73951 16.2426 2.61429C15.1174 1.48907 13.5913 0.856934 12 0.856934C10.4087 0.856934 8.88258 1.48907 7.75736 2.61429C6.63214 3.73951 6 5.26563 6 6.85693V9.42836" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11.1431 16.2859C11.1431 16.5132 11.2334 16.7312 11.3941 16.8919C11.5549 17.0527 11.7729 17.143 12.0002 17.143C12.2275 17.143 12.4456 17.0527 12.6063 16.8919C12.767 16.7312 12.8574 16.5132 12.8574 16.2859C12.8574 16.0585 12.767 15.8405 12.6063 15.6798C12.4456 15.519 12.2275 15.4287 12.0002 15.4287C11.7729 15.4287 11.5549 15.519 11.3941 15.6798C11.2334 15.8405 11.1431 16.0585 11.1431 16.2859Z" stroke="currentcolor" fill="currentcolor" stroke-linecap="round" stroke-linejoin="round"></path><title id="titleAccess-:r7g:">Lock</title>
+          </svg>
+        </p>
+        <p class="hovered__text">Sign up to unlock wholesale pricing</p>
+      </div>
+    {% endunless %}
+  </div>
+</div>

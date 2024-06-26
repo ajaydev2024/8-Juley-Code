@@ -1,0 +1,208 @@
+{% comment %}
+  Parameters:
+  - is_cart {Boolean} - Quantity input is in a cart items element (optional, default is false).
+  - item {Object} - Cart line item (optional).
+  - hide_label {Boolean} - Visually hide the label (optional, default is true).
+  - layout_style {String} - Layout style. Default is 'joined' (optional).
+
+  Usage:
+  {% render 'quantity-input',
+    layout_style: 'spaced',
+    cart_item: item
+  %}
+
+
+   assign quantity_cap = false
+  if item.type != blank
+    assign product_type = item.type
+  endif
+  if item.product.category != blank
+    assign product_type = item.product.category
+  endif
+  assign handlized_product_type = product_type | handleize
+  if handlized_product_type contains 'rugs'
+    assign quantity_cap = true
+  endif
+
+
+
+// end comment here
+
+
+{%- liquid
+  assign id = 'quantity-' | append: section.id
+  if is_cart
+    assign id = item.index | plus: 1 | prepend: 'quantity-'
+  else
+    assign is_cart = false
+  endif
+
+  unless hide_label == false
+    assign hide_label = true
+  endunless
+
+  if layout_style == blank
+    assign layout_style = 'joined'
+  endif
+
+  assign quantity_cap = false
+  if item.type != blank
+    assign product_type = item.tags
+  endif
+  
+  assign handlized_product_type = product_type | handleize
+  if handlized_product_type contains 'rugs'
+    assign quantity_cap = true
+  endif
+    
+-%}
+
+
+<quantity-input class="inline-block">
+  <label class="label{% if hide_label %} visually-hidden{% endif %}" for="{{ id }}">
+    {{- 'products.product.qty' | t -}}
+  </label>
+  <div class="qty-input qty-input--{{ layout_style }} inline-flex items-center w-full">
+    <button type="button" class="qty-input__btn btn btn--minus no-js-hidden" name="minus">
+      <span class="visually-hidden">-</span>
+    </button>
+    <input
+      type="number"
+      class="qty-input__input input"
+      {%- if is_cart %}
+        id="{{ id }}"
+        name="updates[]"
+        min="{% unless  quantity_cap %}0{% else %}{{settings.min_quantity}}{% endunless %}"
+        value="{{ item.quantity }}"
+        data-index="{{ item.index | plus: 1 }}"
+        data-initial-value="{{ item.quantity }}"
+        aria-label="{{ 'cart.items.quantity' | t }}"
+      {%- else %}
+        id="{{ id }}"
+        name="quantity"
+        min="{% unless  quantity_cap %}1{% else %}{{settings.min_quantity}}{% endunless %}"
+        value="{% unless quantity_cap %}1{% else %}{{settings.min_quantity}}{% endunless %}"
+      {%- endif %}
+    >
+    <button type="button" class="qty-input__btn btn btn--plus no-js-hidden" name="plus">
+      <span class="visually-hidden">+</span>
+    </button>
+  </div>
+</quantity-input>
+
+
+This is Default coding Ajay changed on 31 may 2024
+
+  {% endcomment %}
+
+
+{%- liquid
+  assign id = 'quantity-' | append: section.id
+  if is_cart
+    assign id = item.index | plus: 1 | prepend: 'quantity-'
+  else
+    assign is_cart = false
+  endif
+
+  unless hide_label == false
+    assign hide_label = true
+  endunless
+
+  if layout_style == blank
+    assign layout_style = 'joined'
+  endif
+
+  assign quantity_cap = false
+  if item.type != blank
+    assign product_type = item.tags
+  endif
+  
+  assign handlized_product_type = product_type | handleize
+  if handlized_product_type contains 'rugs'
+    assign quantity_cap = true
+  endif
+    
+-%}
+
+
+<quantity-input class="inline-block">
+  <label class="label{% if hide_label %} visually-hidden{% endif %}" for="{{ id }}">
+    {{- 'products.product.qty' | t -}}
+  </label>
+  <div class="qty-input qty-input--{{ layout_style }} inline-flex items-center w-full">
+    <button type="button" class="qty-input__btn btn btn--minus no-js-hidden" name="minus">
+      <span class="visually-hidden">-</span>
+    </button>
+    <input
+      type="number"
+      class="qty-input__input input"
+      {%- if is_cart %}
+        id="{{ id }}"
+        name="updates[]"
+        min="{% unless  quantity_cap %}0{% else %}1{% endunless %}"
+        value="{{ item.quantity }}"
+        data-index="{{ item.index | plus: 1 }}"
+        data-initial-value="{{ item.quantity }}"
+        aria-label="{{ 'cart.items.quantity' | t }}"
+        {%- else %}
+        id="{{ id }}"
+        name="quantity"
+        min="{% if product.selected_or_first_available_variant.inventory_quantity > 0 %}1{% else %}{{ product.selected_or_first_available_variant.metafields.custom.moq.value }}{% endif %}"
+       value="{% if product.selected_or_first_available_variant.inventory_quantity > 0 %}1{% else %}{{ product.selected_or_first_available_variant.metafields.custom.moq.value }}{% endif %}"
+      {%- endif %}
+    >
+    <button type="button" class="qty-input__btn btn btn--plus no-js-hidden" name="plus">
+      <span class="visually-hidden">+</span>
+    </button>
+  </div>
+</quantity-input>
+
+
+    {%  if product.selected_or_first_available_variant.inventory_quantity <=0 %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const optionLabels = document.querySelectorAll('.opt-label--btn');
+    const quantityInput = document.querySelector('.qty-input__input');
+    optionLabels.forEach(label => {
+      label.addEventListener('click', function() {
+        const selectedSize = this.querySelector('span').textContent;
+        console.log('Selected size:', selectedSize);
+        let minQuantity;
+        switch (selectedSize) {
+          case '80x250':
+            minQuantity = 8;
+            break;
+          case '140x200':
+            minQuantity = 6;
+            break;
+          case '160x230':
+            minQuantity = 5;
+            break;
+          case '200x290':
+            minQuantity = 3;
+            break;
+          default:
+            minQuantity = 1;
+        }
+
+        quantityInput.value = minQuantity;
+        console.log('Updated quantity:', minQuantity);
+        quantityInput.setAttribute('min', minQuantity); 
+        quantityInput.setAttribute('data-min-quantity', minQuantity); // Set data attribute for min quantity
+      });
+    });
+     quantityInput.addEventListener('change', function() {
+       
+      const enteredQuantity = parseInt(quantityInput.value);
+      const minQuantity = parseInt(quantityInput.getAttribute('data-min-quantity'));
+
+      if (enteredQuantity < minQuantity) {
+        alert('Minimum Quantity is ' + minQuantity + ' only for this Rug Size');
+        quantityInput.value = minQuantity;
+      }
+    });
+  });
+  
+</script>
+      {% endif %}

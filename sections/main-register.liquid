@@ -1,0 +1,202 @@
+<script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+
+<div class="container">
+  <div class="section__header text-center">
+    <h1 class="h2">{{ 'customer.register.title' | t }}</h1>
+  </div>
+
+  {%- form 'create_customer', class: 'form form-width mx-auto register-customer__form' -%}
+    <div class="register_popup-error__message alert mb-4 bg-error-bg text-error-text hidden"></div>
+    {%- if form.errors -%}
+      <div class="alert mb-8 bg-error-bg text-error-text" tabindex="-1" autofocus>
+        <h2 class="h5 text-current">{{ 'contact.form.error_heading' | t }}</h2>
+        <ul class="styled-list">
+          {%- for field in form.errors -%}
+            <li>
+              {%- if field == 'form' -%}
+                {{ form.errors.messages[field] }}
+              {%- else -%}
+                <a class="link text-current" href="#register-{{ field }}">
+                  {{- form.errors.translated_fields[field] | capitalize }}
+                  {{ form.errors.messages[field] -}}
+                </a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    <div class="custom_error register_popup-error__message">
+      <p class="error_email hidden">Please enter valid email id</p>
+      <p class="error_number hidden">Please enter 8 digit number</p>
+    </div>
+
+    <div class="input-container">
+      <div class="form__field full_span">
+        <label class="label" for="register-first-name">Name</label>
+        <input
+          type="text"
+          class="input w-full"
+          id="register-first-name"
+          name="customer[first_name]"
+          {%- if form.first_name %}
+            value="{{ form.first_name }}"
+          {%- endif %}
+          autocomplete="given-name"
+        >
+      </div>
+
+      <div class="form__field required">
+        <label class="label" for="company-name">company Name</label>
+        <input class="input w-full" id="company-name" type="text" required name="customer[note][companyName]">
+      </div>
+
+      <div class="form__field required">
+        <label class="label" for="company-number">company Number</label>
+        <input
+          class="input w-full"
+          id="company-number"
+          type="text"
+          title="Enter minimum 8 characters, only letters and numbers"
+          pattern="[A-Za-z0-9]{8,}"
+          required
+          name="customer[note][companyNumber]"
+        >
+      </div>
+
+      <div class="form__field required">
+        <label class="label" for="register-email">{{ 'customer.register.email' | t }}</label>
+        <input
+          type="email"
+          class="input w-full"
+          id="register-email"
+          name="customer[email]"
+          {%- if form.email %}
+            value="{{ form.email }}"
+          {%- endif %}
+          autocomplete="email"
+          {%- if form.errors contains 'email' %}
+            aria-invalid="true"
+            aria-describedby="register-email-error"
+          {%- endif %}
+          aria-required="true"
+          required
+        >
+        {%- if form.errors contains 'email' -%}
+          <p class="form__field-error" id="register-email-error">
+            {{ form.errors.translated_fields.email | capitalize }}
+            {{ form.errors.messages.email }}.
+          </p>
+        {%- endif -%}
+      </div>
+
+      <div class="form__field required">
+        <label class="label" for="register-password">{{ 'customer.register.password' | t }}</label>
+        <input
+          type="password"
+          class="input w-full"
+          id="register-password"
+          name="customer[password]"
+          autocomplete="new-password"
+          {%- if form.errors contains 'password' %}
+            aria-invalid="true"
+            aria-describedby="register-password-error"
+          {%- endif %}
+          aria-required="true"
+          required
+        >
+        {%- if form.errors contains 'password' -%}
+          <p class="form__field-error" id="register-password-error">
+            {{ form.errors.translated_fields.password | capitalize }}
+            {{ form.errors.messages.password }}.
+          </p>
+        {%- endif -%}
+      </div>
+
+     
+
+      <div class="form__field">
+        <label class="label" for="mobile-number">Mobile Number</label>
+        <input class="input w-full" id="mobile-number" type="number" name="customer[note][mobileNumber]">
+      </div>
+
+      <div class="form__field">
+        <label class="label" for="VAT-number">VAT Number</label>
+        <input class="input w-full" id="VAT-number" type="text" name="customer[note][VATNumber]">
+      </div>
+
+      <div class="form__field required">
+        <label class="label" for="company-type">Business type</label>
+        <select
+          required
+          name="customer[note][Business Type]"
+          aria-label="Business Type"
+          class="input w-full"
+          aria-required="true"
+          id="company-type"
+          other_value="1"
+        >
+          <option value="" aria-required="true" aria-placeholder="Please Select">Please Select</option>
+          <option value="Brick &amp; mortar">Brick &amp; mortar</option>
+          <option value="Online only">Online only</option>
+          <option value="Brick &amp; mortar and Online">Brick &amp; mortar and Online</option>
+          <option value="Interior Designer">Interior Designer</option>
+          <option value="Contractor or Developer">Contractor or Developer</option>
+          <option value="Other (please specify)">Other (please specify)</option>
+        </select>
+      </div>
+
+      <div class="form__field">
+        <label class="label" for="annual-sales">Annual sales</label>
+        <select
+          name="customer[note][Annual Sales]"
+          aria-label="Business Type"
+          class="input w-full"
+          aria-required="true"
+          id="annual-sales"
+          other_value="0"
+        >
+          <option value="" aria-placeholder="Please Select">Please Select</option>
+          <option value="£0 -  £50K">£0 - £50K</option>
+          <option value="£50K - £150K">£50K - £150K</option>
+          <option value="£150K - £500K">£150K - £500K</option>
+          <option value="£500K - £2M">£500K - £2M</option>
+          <option value="> £2M">&gt; £2M</option>
+        </select>
+      </div>
+
+      <div class="form__field full_span">
+        <label class="label" for="message">message</label>
+        <textarea
+          class="input w-full"
+          id="message"
+          style="height: 80px"
+          name="customer[note][message]"
+          data-max="250"
+          aria-valuemax="250"
+          data-limiting="false"
+          aria-required="false"
+          aria-placeholder=""
+          placeholder=""
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="mt-6">
+      <button class="btn btn--primary w-full customer__registration">{{ 'customer.register.submit' | t }}</button>
+    </div>
+
+    <p class="mt-8 mb-0 text-center">
+      {{ 'customer.register.have_account' | t }}
+      <a class="link" href="{{ routes.account_login_url }}">{{ 'customer.register.log_in' | t }}</a>
+    </p>
+  {%- endform -%}
+</div>
+
+{% schema %}
+{
+  "name": "Register",
+  "class": "cc-main-register section section--template"
+}
+{% endschema %}

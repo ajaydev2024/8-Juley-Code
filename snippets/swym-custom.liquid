@@ -1,0 +1,84 @@
+<!-- Custom Code to Add Wishlist behind Login. -->
+<script defer>
+    function swymCallbackFn(swat) {
+      var isLoggedIn;
+      {% if customer %}
+      isLoggedIn = true;
+      {% else %}
+      isLoggedIn = false;
+      {% endif %}
+      if (isLoggedIn == false) {
+        SwymUtils.getHostedURL = function() {
+          /*    	Navigate to login page on click of swym-icons for wishlist page.*/
+          return "/account/login";
+        }
+        //       Override launchpoints.
+        swat.ui.open = function(){
+          console.log("Not Logged IN!");
+          swymRedirectToLogin();
+        }
+        //       Override default API implementations.
+        swat.api.addToWishList = function(){
+          console.log("Not Logged IN!");
+          swymRedirectToLogin();
+        }
+
+        //       Override API for Pop-up
+        swat.ui.uiRef.addToWishlist =function(){
+          console.log("Not Logged IN!");
+          swymRedirectToLogin();
+        }
+      }
+
+      document.addEventListener("swym:collections-loaded", function(){
+        swat.initializeActionButtons(".main-products-grid__results > ul.grid");
+      })
+
+      document.addEventListener("swym:product-recommendation-loaded", function(){
+        swat.initializeActionButtons("product-recommendations ul");
+      })
+
+
+      function swymRedirectToLogin(customURL){
+        var accountsPageURL = customURL || window.origin + "/account/login";
+        window.location = accountsPageURL;
+      }
+
+
+          // Define eventname
+      let event = 'sw:addedtocart';
+
+      // Define the event listener function
+      let listener = function(e) {
+            fetch('/?sections=cart-drawer,cart-icon-bubble')
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Network response was not ok');
+              }
+              return response.json();
+          })
+          .then(data => {
+              const cartIconBubble = document.getElementById('cart-icon-bubble');
+              if (cartIconBubble) {
+                cartIconBubble.innerHTML = data['cart-icon-bubble'];
+              }
+              const cartDrawer = document.getElementById('cart-drawer');
+              if (cartDrawer) {
+                cartDrawer.innerHTML = data['cart-drawer'];
+              }
+
+          })
+          .catch(error => console.error('Error fetching cart data:', error));
+
+
+      };
+
+  // Add listener for the 'addedtocart' event to the Swym Event Layer
+    swat.evtLayer.addEventListener('sw:addedtocart', listener)
+      }
+
+      if (!window.SwymCallbacks) {
+        window.SwymCallbacks = [];
+      }
+      window.SwymCallbacks.push(swymCallbackFn);
+</script>
