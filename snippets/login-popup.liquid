@@ -70,12 +70,7 @@
 
       <p class="mt-8 mb-0 text-center">
         {{ 'customer.login.new_customer' | t }}
-        {% comment %}   install a SureCust app to Redirect to Registration Form , i remove the Class js-register so that
-        JS code is not run on click on create account
-        <a class="link js-register" href="/account/register">{{ 'customer.login.create_account' | t }}</a>
-         {% endcomment %}
-                <a class="link" href="/account/register">{{ 'customer.login.create_account' | t }}</a>
-
+        <a class="link" href="/account/register">{{ 'customer.login.create_account' | t }}</a>
       </p>
     {%- endform -%}
   </div>
@@ -180,6 +175,7 @@
             class="input w-full"
             id="company-number"
             type="text"
+            oninput=""
           title="Enter minimum 8 characters, only letters and numbers"
           pattern="[A-Za-z0-9]{8,}"
             required
@@ -328,4 +324,25 @@
     <div id="mgjfHov9Ptj5g5nwcOMSWg" class="pxFormGenerator" style="margin: 0 auto;"></div>
   </div>
 </div>
-  
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Function to perform pre-check
+    function preCheckBeforeRegister(event) {
+      console.log("preCheckBeforeRegister Running")
+        event.preventDefault();
+
+        // Perform your pre-check logic here
+        // Example: Check if user is already logged in
+        var userLoggedIn = false; // Replace this with actual logic
+
+      
+    }
+
+    // Bind the pre-check function to the link
+    var registerLink = document.querySelector('a.link[href="/account/register"]');
+    if (registerLink) {
+        registerLink.addEventListener('click', preCheckBeforeRegister);
+    }
+  });
+</script>
