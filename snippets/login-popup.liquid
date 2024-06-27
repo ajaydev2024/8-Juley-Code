@@ -74,7 +74,7 @@
         JS code is not run on click on create account
         <a class="link js-register" href="/account/register">{{ 'customer.login.create_account' | t }}</a>
          {% endcomment %}
-                <a class="link" href="/account/register">{{ 'customer.login.create_account' | t }}</a>
+       <a class="link" href="/account/register" onclick="return false;">{{ 'customer.login.create_account' | t }}</a>
 
       </p>
     {%- endform -%}
@@ -180,6 +180,7 @@
             class="input w-full"
             id="company-number"
             type="text"
+            oninput=""
           title="Enter minimum 8 characters, only letters and numbers"
           pattern="[A-Za-z0-9]{8,}"
             required
@@ -328,4 +329,33 @@
     <div id="mgjfHov9Ptj5g5nwcOMSWg" class="pxFormGenerator" style="margin: 0 auto;"></div>
   </div>
 </div>
-  
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Function to perform pre-check
+    function preCheckBeforeRegister(event) {
+        event.preventDefault();
+
+        // Perform your pre-check logic here
+        // Example: Check if user is already logged in
+        var userLoggedIn = false; // Replace this with actual logic
+
+        if (userLoggedIn) {
+            alert('You are already logged in.');
+            // Redirect to account page or any other desired action
+            window.location.href = '/account';
+        } else {
+            // Redirect to the registration page
+            window.location.href = '/account/register';
+        }
+    }
+
+    // Bind the pre-check function to the link
+    var registerLink = document.querySelector('a.link[href="/account/register"]');
+    if (registerLink) {
+        registerLink.addEventListener('click', preCheckBeforeRegister);
+    }
+});
+
+  </script>
