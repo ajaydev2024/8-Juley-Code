@@ -336,18 +336,11 @@
         // Example: Check if user is already logged in
         var userLoggedIn = false; // Replace this with actual logic
 
-        if (userLoggedIn) {
-            alert('You are already logged in.');
-            // Redirect to account page or any other desired action
-            window.location.href = '/account';
-        } else {
-            // Redirect to the registration page
-            window.location.href = '/account/register';
-        }
+      
     }
 
     // Bind the pre-check function to the link
-    var registerLink = document.querySelector('a.link[href="#"]');
+    var registerLink = document.querySelector('a.link[href="/account/register"]');
     if (registerLink) {
         registerLink.addEventListener('click', preCheckBeforeRegister);
     }
