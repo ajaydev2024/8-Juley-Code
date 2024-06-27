@@ -70,7 +70,12 @@
 
       <p class="mt-8 mb-0 text-center">
         {{ 'customer.login.new_customer' | t }}
-        <a class="link" href="/account/register">{{ 'customer.login.create_account' | t }}</a>
+        {% comment %}   install a SureCust app to Redirect to Registration Form , i remove the Class js-register so that
+        JS code is not run on click on create account
+        <a class="link js-register" href="/account/register">{{ 'customer.login.create_account' | t }}</a>
+         {% endcomment %}
+                <a class="link" href="/account/register">{{ 'customer.login.create_account' | t }}</a>
+
       </p>
     {%- endform -%}
   </div>
