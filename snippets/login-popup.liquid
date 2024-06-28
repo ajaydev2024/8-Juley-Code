@@ -75,7 +75,7 @@
         <a class="link js-register" href="/account/register">{{ 'customer.login.create_account' | t }}</a>
          {% endcomment %}
                 <!-- <a class="link" href="/account/register">{{ 'customer.login.create_account' | t }}</a> -->
-                <a class="link" href="#" onclick="fetchVatNumber();">{{ 'customer.login.create_account' | t }}</a>
+                <a class="link" href="#" onclick="fetchVatNumber(e);">{{ 'customer.login.create_account' | t }}</a>
 
       </p>
     {%- endform -%}
@@ -337,7 +337,9 @@
   console.log('companyNumber', companyNumber)
  
   document.addEventListener('DOMContentLoaded', function() {
-    fetchVatNumber(){
+    fetchVatNumber(event){
+      event.preventDefault()
+      
       console.log("Running")
     }
   })
