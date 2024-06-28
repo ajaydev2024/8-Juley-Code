@@ -114,8 +114,6 @@
         {%- endif -%}
       </div>
 
-     
-
       <div class="form__field">
         <label class="label" for="mobile-number">Mobile Number</label>
         <input class="input w-full" id="mobile-number" type="number" name="customer[note][mobileNumber]">
@@ -184,8 +182,17 @@
     </div>
 
     <div class="mt-6">
-      <!-- <button class="btn btn--primary w-full customer__registration">{{ 'customer.register.submit' | t }}</button> -->
-      <button class="btn btn--primary w-full customer__registration" onclick="fetchVatNumber(e);">TEST CREATE ACCOUNT</button>
+      <!--
+        <button class="btn btn--primary w-full customer__registration">{{ 'customer.register.submit' | t }}</button>
+      -->
+      <button
+        type="button"
+        id="register-button"
+        class="btn btn--primary w-full customer__registration"
+        onclick="fetchVatNumber(e);"
+      >
+        TEST CREATE ACCOUNT
+      </button>
     </div>
 
     <p class="mt-8 mb-0 text-center">
@@ -196,11 +203,13 @@
 </div>
 
 <script>
+    const registerButton = document.getElementById('register-button')
+  console.log(registerButton)
    document.addEventListener('DOMContentLoaded', function() {
     fetchVatNumber(event){
       alert('test')
       event.preventDefault()
-      
+
       console.log("Running")
     }
   })
