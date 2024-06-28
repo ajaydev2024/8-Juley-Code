@@ -331,23 +331,28 @@
 </div>
 
 <script>
+  alert('before test')
   document.addEventListener('DOMContentLoaded', function() {
-    // Function to perform pre-check
-    function preCheckBeforeRegister(event) {
-      console.log("preCheckBeforeRegister Running")
-        event.preventDefault();
+    alert('after test')
+  })
+  
+  // document.addEventListener('DOMContentLoaded', function() {
+  //   // Function to perform pre-check
+  //   function preCheckBeforeRegister(event) {
+  //     console.log("preCheckBeforeRegister Running")
+  //       event.preventDefault();
 
-        // Perform your pre-check logic here
-        // Example: Check if user is already logged in
-        var userLoggedIn = false; // Replace this with actual logic
+  //       // Perform your pre-check logic here
+  //       // Example: Check if user is already logged in
+  //       var userLoggedIn = false; // Replace this with actual logic
 
       
-    }
+  //   }
 
-    // Bind the pre-check function to the link
-    var registerLink = document.querySelector('a.link[href="/account/register"]');
-    if (registerLink) {
-        registerLink.addEventListener('click', preCheckBeforeRegister);
-    }
-  });
+  //   // Bind the pre-check function to the link
+  //   var registerLink = document.querySelector('a.link[href="/account/register"]');
+  //   if (registerLink) {
+  //       registerLink.addEventListener('click', preCheckBeforeRegister);
+  //   }
+  // });
 </script>
