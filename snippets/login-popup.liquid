@@ -74,8 +74,7 @@
         JS code is not run on click on create account
         <a class="link js-register" href="/account/register">{{ 'customer.login.create_account' | t }}</a>
          {% endcomment %}
-                <!-- <a class="link" href="/account/register">{{ 'customer.login.create_account' | t }}</a> -->
-                <a class="link" href="#" onclick="fetchVatNumber(e);">sdfsdfsdf</a>
+                <a class="link" href="/account/register">{{ 'customer.login.create_account' | t }}</a>
 
       </p>
     {%- endform -%}
@@ -308,7 +307,8 @@
       </div>
   
       <div class="mt-6">
-        <button class="btn btn--primary w-full customer__registration">{{ 'customer.register.submit' | t }}</button>
+        <!-- <button class="btn btn--primary w-full customer__registration">{{ 'customer.register.submit' | t }}</button> -->
+        <button class="btn btn--primary w-full customer__registration" onclick="fetchVatNumber(e);">TEST BUTTON</button>
       </div>
   
       <p class="mt-8 mb-0 text-center">
