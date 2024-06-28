@@ -307,8 +307,7 @@
       </div>
   
       <div class="mt-6">
-        <!-- <button class="btn btn--primary w-full customer__registration">{{ 'customer.register.submit' | t }}</button> -->
-        <button class="btn btn--primary w-full customer__registration" onclick="fetchVatNumber(e);">TEST BUTTON</button>
+        <button class="btn btn--primary w-full customer__registration">{{ 'customer.register.submit' | t }}</button>
       </div>
   
       <p class="mt-8 mb-0 text-center">
@@ -339,7 +338,6 @@
   document.addEventListener('DOMContentLoaded', function() {
     fetchVatNumber(event){
       event.preventDefault()
-      alert('test')
       
       console.log("Running")
     }
