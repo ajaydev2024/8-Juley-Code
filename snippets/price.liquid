@@ -51,32 +51,16 @@
           {% endfor %}
         </strong>
       {% else %}
-        {% if customer %}
         <strong class="product-info__compareprice price__current hidden {% unless customer %}hidden{% endunless %}">
           <span class="price-details__prefix">WSP</span
-          >
-           {% for p_variant in product.variants %}
-            <del
-              class="variant_compare-price prodct-meta-rrp {% unless variant.id == p_variant.id %}hidden{% endunless %}"
-              data-vid="{{ p_variant.id }}"
-            >
-               £{{- p_variant.metafields.custom.compare_wsp.value | replace : '.0'   -}}
-            </del>
-          {% endfor %}
+          ><del class="variant_compare-price">{{- variant.compare_at_price | money_without_trailing_zeros -}}</del>
         </strong>
 
         <strong class="price__current {% unless customer %}hidden{% endunless %}">
           <span class="price-details__prefix">WSP</span>
-         {% for p_variant in product.variants %}
-            <span
-              class="variant-selling_price prodct-meta-rrp {% unless variant.id == p_variant.id %}hidden{% endunless %}"
-              data-vid="{{ p_variant.id }}"
-            >
-               £{{- p_variant.metafields.custom.price_wsp.value | replace : '.0' -}}
-            </span>
-          {% endfor %}
+          <span class="variant-selling_price">{{ variant.price | money_without_trailing_zeros }}</span>
         </strong>
-       {% endif %}
+       
         <strong class="price__current">
           <span class="price-details__prefix">RRP</span>
           {% for p_variant in product.variants %}
@@ -84,7 +68,7 @@
               class="price-details__prefix prodct-meta-rrp {% unless variant.id == p_variant.id %}hidden{% endunless %}"
               data-vid="{{ p_variant.id }}"
             >
-               {{- p_variant.metafields.custom.rrp.value | money_without_trailing_zeros -}}
+              {{- p_variant.metafields.custom.rrp.value | money_without_trailing_zeros -}}
             </span>
           {% endfor %}
         </strong>

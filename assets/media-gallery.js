@@ -74,7 +74,7 @@ if (!customElements.get('media-gallery')) {
     /**
      * Handle a change in variant on the page.
      * @param {Event} evt - variant change event dispatched by variant-picker
-     */
+    this is old Funtion to change Image variants based on Color only
     onVariantChange(evt) {
       if (this.mediaGroupingEnabled) {
         this.setActiveMediaGroup(this.getMediaGroupFromOptionSelectors());
@@ -87,7 +87,47 @@ if (!customElements.get('media-gallery')) {
         this.customSetActiveMedia(variantMedia, true);
       }
     }
+ */
 
+    /*    this is Updated Funtion by Ajay to change Image variants based on Color & Size (varaint.option2) only*/
+    onVariantChange(evt) {
+      const altText = evt.detail.variant.featured_image.alt ? evt.detail.variant.featured_image.alt.toLowerCase() : '';
+      const option2Text = evt.detail.variant.option2 ? evt.detail.variant.option2.toLowerCase() : '';
+     let matchesAltPart = null;
+  
+      if (altText && option2Text) {
+          // Split the altText by comma and check if option2Text includes any part of it
+          const altParts = altText.split(',');
+          matchesAltPart = altParts.some(part => option2Text.includes(part.trim()));
+      }
+    
+      if (matchesAltPart) {
+          document.querySelectorAll('[thumbnail-alt]').forEach(img => img.style.display = 'none');
+          const currentImgAlt = evt.detail.variant.featured_media.alt;
+          const thumbnailSelector = `[thumbnail-alt='${currentImgAlt}']`;
+          document.querySelectorAll(thumbnailSelector).forEach(img => img.style.display = 'block');
+        
+        if (evt.detail.variant && evt.detail.variant.featured_media) {
+              const variantMedia = this.viewer.querySelector(
+                  `[data-media-id="${evt.detail.variant.featured_media.id}"]`
+              );
+              this.customSetActiveMedia(variantMedia, true);
+          }
+        
+      } else {
+          console.log("Else");
+          if (this.mediaGroupingEnabled) {
+              this.setActiveMediaGroup(this.getMediaGroupFromOptionSelectors());
+          }
+  
+          if (evt.detail.variant && evt.detail.variant.featured_media) {
+              const variantMedia = this.viewer.querySelector(
+                  `[data-media-id="${evt.detail.variant.featured_media.id}"]`
+              );
+              this.customSetActiveMedia(variantMedia, true);
+          }
+      }
+  }
     /**
      * Gets the media group from currently selected variant options.
      * @returns {?object}

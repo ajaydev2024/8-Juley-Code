@@ -167,7 +167,6 @@ This is Default coding Ajay changed on 31 may 2024
     optionLabels.forEach(label => {
       label.addEventListener('click', function() {
         const selectedSize = this.querySelector('span').textContent;
-        console.log('Selected size:', selectedSize);
         let minQuantity;
         switch (selectedSize) {
           case '80x250':
@@ -187,7 +186,6 @@ This is Default coding Ajay changed on 31 may 2024
         }
 
         quantityInput.value = minQuantity;
-        console.log('Updated quantity:', minQuantity);
         quantityInput.setAttribute('min', minQuantity); 
         quantityInput.setAttribute('data-min-quantity', minQuantity); // Set data attribute for min quantity
       });

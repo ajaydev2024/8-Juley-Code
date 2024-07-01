@@ -114,6 +114,8 @@
         {%- endif -%}
       </div>
 
+     
+
       <div class="form__field">
         <label class="label" for="mobile-number">Mobile Number</label>
         <input class="input w-full" id="mobile-number" type="number" name="customer[note][mobileNumber]">
@@ -191,19 +193,6 @@
     </p>
   {%- endform -%}
 </div>
-
-<script>
-    const registerButton = document.getElementById('register-button')
-  console.log(registerButton)
-   document.addEventListener('DOMContentLoaded', function() {
-    fetchVatNumber(event){
-      alert('test')
-      event.preventDefault()
-
-      console.log("Running")
-    }
-  })
-</script>
 
 {% schema %}
 {
