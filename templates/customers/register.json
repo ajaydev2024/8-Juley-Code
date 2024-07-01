@@ -14,12 +14,6 @@
       "settings": {
       }
     },
-    "17190432857ce3a4de": {
-      "type": "apps",
-      "settings": {
-        "full_width": false
-      }
-    },
     "custom_liquid_JQfw3K": {
       "type": "custom-liquid",
       "settings": {
@@ -33,7 +27,6 @@
   },
   "order": [
     "main",
-    "17190432857ce3a4de",
     "custom_liquid_JQfw3K"
   ]
 }
