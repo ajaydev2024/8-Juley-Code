@@ -1,1 +1,40 @@
-{"sections":{"main":{"type":"main-register","disabled":true,"settings":{}},"17190432857ce3a4de":{"type":"apps","blocks":{"surecust_custom_form_TKrRqY":{"type":"shopify:\/\/apps\/surecust\/blocks\/custom-form\/11b1d95b-f9a2-49ad-9a53-3d6a172a070d","settings":{"title":"Registration Form","subtitle":"","formid":"17190424997808"}}},"block_order":["surecust_custom_form_TKrRqY"],"settings":{"full_width":false}},"custom_liquid_JQfw3K":{"type":"custom-liquid","settings":{"custom_liquid":"<style>\n.onst-registration-form h2.title{\ntext-align:left;\n}\n\n.onst-registration-form-container-box form .onst-success-message.onstactive {\ntext-transform: math-auto;\n}\n<\/style>","section_height":"default","full_width":false,"dividers":"none","prevent_animation":false}}},"order":["main","17190432857ce3a4de","custom_liquid_JQfw3K"]}
+/*
+* ------------------------------------------------------------
+* IMPORTANT: The contents of this file are auto-generated.
+*
+* This file may be updated by the Shopify admin theme editor
+* or related systems. Please exercise caution as any changes
+* made to this file may be overwritten.
+* ------------------------------------------------------------
+*/
+{
+  "sections": {
+    "main": {
+      "type": "main-register",
+      "disabled": true,
+      "settings": {
+      }
+    },
+    "17190432857ce3a4de": {
+      "type": "apps",
+      "settings": {
+        "full_width": false
+      }
+    },
+    "custom_liquid_JQfw3K": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<style>\n.onst-registration-form h2.title{\ntext-align:left;\n}\n\n.onst-registration-form-container-box form .onst-success-message.onstactive {\ntext-transform: math-auto;\n}\n<\/style>",
+        "section_height": "default",
+        "full_width": false,
+        "dividers": "none",
+        "prevent_animation": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "17190432857ce3a4de",
+    "custom_liquid_JQfw3K"
+  ]
+}
