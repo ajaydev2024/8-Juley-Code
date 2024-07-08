@@ -215,6 +215,7 @@
             </td>
             <td class="cart-item__qty">
               <div class="flex items-center mt-4">
+                <input type="hidden" name="id" value="{{ item.variant_id }}">
                 {% render 'quantity-input', is_cart: true, item: item, layout_style: 'combined' %}
                 <a
                   class="cart-item__remove btn btn--icon text-current tap-target js-remove-item"

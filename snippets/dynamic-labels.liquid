@@ -97,8 +97,10 @@
         }
 
         minusButton.addEventListener('click', async function() {
-            currentQty = parseInt(input.value);
-            if (currentQty > 1) {
+             let qtyOnClick= document.querySelector('.qty-input__input');
+          let minValueOnClick = qtyOnClick.min;
+          currentQty = parseInt(input.value);
+            if (currentQty > minValueOnClick) {
                 currentQty--;
                 await updateVariantInventory(variantId);
                 processOrder(currentQty, totalReadyToDispatchUnits, total_InStockUnits);

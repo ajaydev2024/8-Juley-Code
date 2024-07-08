@@ -580,6 +580,7 @@ class QuantityInput extends HTMLElement {
 
     this.addEventListener('click', this.handleClick.bind(this));
     this.input.addEventListener('keydown', this.handleKeydown.bind(this));
+    this.input.addEventListener('input',  this.inputClick.bind(this));
   }
 
   /**
@@ -590,14 +591,18 @@ class QuantityInput extends HTMLElement {
     if (!evt.target.matches('.qty-input__btn')) return;
     evt.preventDefault();
     this.preValue = this.input.value
+    this.minValue= this.input.min
 
     if (evt.target.name === 'plus') {
       this.input.stepUp();
     } else {
       this.input.stepDown();
-      if(this.input.getAttribute('min') === '5' && this.preValue === '5') {
-        alert("Minimum Quantity is 5 only for Rugs");
+      if(this.input.getAttribute('min') === this.minValue && this.preValue === this.minValue) {
+        alert(`Minimum order quantity is ${this.minValue} for this product `);
       }
+      // if(this.input.getAttribute('min') === '5' && this.preValue === '5') {
+      //   alert("Minimum Quantity is 5 only for Rugs");
+      // }
     }
 
     if (this.input.value !== this.currentQty) {
@@ -606,18 +611,56 @@ class QuantityInput extends HTMLElement {
     }
   }
 
+  
+
   /**
    * Handles 'keydown' events on the input field.
    * @param {object} evt - Event object.
    */
-  handleKeydown(evt) {
+
+ inputClick(evt) {
+  var currentQty = parseInt(evt.target.value);
+  var moq = this.input.min;
+
+  // Clear any existing timeout
+  clearTimeout(this.input.timeoutId);
+
+  // Set a new timeout to validate the quantity after a delay
+  this.input.timeoutId = setTimeout(function() {
+    if (currentQty < parseInt(moq)) {
+      alert(`Minimum order quantity is ${moq} for this product`);
+      this.input.value = moq;
+    }
+  }.bind(this), 1000); // Delay of 1 second (1000 milliseconds)
+}
+
+
+  
+  // handleKeydown(evt) {
+  //   if (evt.key !== 'Enter') return;
+  //   evt.preventDefault();
+
+  //   if (this.input.value !== this.currentQty) {
+  //     this.input.blur();
+  //     this.input.focus();
+  //     this.currentQty = this.input.value;
+  //   }
+  // }
+
+   handleKeydown(evt) {
+   
     if (evt.key !== 'Enter') return;
     evt.preventDefault();
-
-    if (this.input.value !== this.currentQty) {
-      this.input.blur();
-      this.input.focus();
+    console.log(parseInt(this.input.value));
+    console.log(parseInt(this.moq));
+    if (parseInt(this.input.value) < parseInt(this.moq)) {
+      this.input.value = this.moq;
+      this.input.dispatchEvent(this.changeEvent);
       this.currentQty = this.input.value;
+    } else if (this.input.value !== this.currentQty) {
+      this.input.dispatchEvent(this.changeEvent);
+      this.currentQty = this.input.value;
+     
     }
   }
 }

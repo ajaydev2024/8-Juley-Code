@@ -115,7 +115,7 @@ if (!customElements.get('media-gallery')) {
           }
         
       } else {
-          console.log("Else");
+         // console.log("Else");
           if (this.mediaGroupingEnabled) {
               this.setActiveMediaGroup(this.getMediaGroupFromOptionSelectors());
           }

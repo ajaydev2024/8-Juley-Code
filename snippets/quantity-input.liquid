@@ -10,6 +10,76 @@
     layout_style: 'spaced',
     cart_item: item
   %}
+{% endcomment %}
+
+{%- liquid
+  assign id = 'quantity-' | append: section.id
+  if is_cart
+    assign id = item.index | plus: 1 | prepend: 'quantity-'
+  else
+    assign is_cart = false
+  endif
+
+  unless hide_label == false
+    assign hide_label = true
+  endunless
+
+  if layout_style == blank
+    assign layout_style = 'joined'
+  endif
+
+-%}
+<quantity-input class="inline-block aa">
+  <label class="label{% if hide_label %} visually-hidden{% endif %}" for="{{ id }}">
+    {{- 'products.product.qty' | t -}}
+  </label>
+  <div class="qty-input qty-input--{{ layout_style }} inline-flex items-center w-full">
+    <button type="button" class="qty-input__btn btn btn--minus no-js-hidden" name="minus">
+      <span class="visually-hidden">-</span>
+    </button>
+   
+    <input
+      type="number"
+      class="qty-input__input input"
+      {%- if is_cart %}
+        id="{{ id }}"
+        name="updates[]"
+       min="{{ item.variant.metafields.custom.moq | metafield_text }}"
+    value="{{ item.quantity }}"
+        data-index="{{ item.index | plus: 1 }}"
+        data-initial-value="{{ item.quantity }}"
+        aria-label="{{ 'cart.items.quantity' | t }}"
+      {%- else %}
+        id="{{ id }}"
+        name="quantity"
+        min=""
+        value=""
+      {%- endif %}
+    >
+    <button type="button" class="qty-input__btn btn btn--plus no-js-hidden" name="plus">
+      <span class="visually-hidden">+</span>
+    </button>
+  </div>
+</quantity-input>
+
+
+
+ 
+
+
+
+{% comment %}
+  Parameters:
+  - is_cart {Boolean} - Quantity input is in a cart items element (optional, default is false).
+  - item {Object} - Cart line item (optional).
+  - hide_label {Boolean} - Visually hide the label (optional, default is true).
+  - layout_style {String} - Layout style. Default is 'joined' (optional).
+
+  Usage:
+  {% render 'quantity-input',
+    layout_style: 'spaced',
+    cart_item: item
+  %}
 
 
    assign quantity_cap = false
@@ -93,7 +163,7 @@
 
 This is Default coding Ajay changed on 31 may 2024
 
-  {% endcomment %}
+
 
 
 {%- liquid
@@ -157,10 +227,10 @@ This is Default coding Ajay changed on 31 may 2024
   </div>
 </quantity-input>
 
-
+{% endcomment %}
     {%  if product.selected_or_first_available_variant.inventory_quantity <=0 %}
 
-<script>
+<!-- <script>
   document.addEventListener('DOMContentLoaded', function() {
     const optionLabels = document.querySelectorAll('.opt-label--btn');
     const quantityInput = document.querySelector('.qty-input__input');
@@ -202,5 +272,5 @@ This is Default coding Ajay changed on 31 may 2024
     });
   });
   
-</script>
+</script> -->
       {% endif %}

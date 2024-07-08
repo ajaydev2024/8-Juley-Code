@@ -109,7 +109,6 @@ const isEmailValid = {};
 const isNumberValid = {};
 
 document.querySelectorAll('form[action="/account"]').forEach((form) => {
-  console.log("1st July")
     const submitButton = form.querySelector('button.customer__registration');
     const errorMsg = form.querySelector('.custom_error.register_popup-error__message');
     form.querySelectorAll('input[required], select[required]').forEach((input) => {

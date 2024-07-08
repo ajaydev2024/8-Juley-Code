@@ -163,15 +163,15 @@ if (!customElements.get('cart-items')) {
 
         //if the product type contains rugs, if the quantity is below 5, this change the qunatity to 5
 
-        this.querySelectorAll('.cart-item').forEach((each, index) => {
-          let cartItem = data.items[index];
-          if (cartItem.product_type.toLowerCase().includes('rugs')) {
-            let value = parseInt(each.querySelector('.qty-input input').value);
-            if (!(value >= 5)) {
-              each.querySelector('.qty-input input').value = 5
-            }
-          }
-        });
+        // this.querySelectorAll('.cart-item').forEach((each, index) => {
+        //   let cartItem = data.items[index];
+        //   if (cartItem.product_type.toLowerCase().includes('rugs')) {
+        //     let value = parseInt(each.querySelector('.qty-input input').value);
+        //     if (!(value >= 5)) {
+        //       each.querySelector('.qty-input input').value = 5
+        //     }
+        //   }
+        // });
 
         lineErrors.innerHTML = '';
         lineErrors.hidden = true;

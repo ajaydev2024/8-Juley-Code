@@ -752,7 +752,63 @@
 {%- endif -%}
 
 {% render 'structured-data-product', product: product, current_variant: current_variant %}
+{% comment %} script for product page quantity {% endcomment %}
+{%- capture 'meta_data' -%}
+  {%- for variant in product.variants -%}
+    {{- variant.id -}}:{{- variant.metafields.custom.moq | metafield_text | json -}}
+    {% unless forloop.last %}, {% endunless %}
+  {%- endfor -%}
+{%- endcapture -%}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    let metaData = {  {{ meta_data }} };
+    let variantSelector = document.querySelector('input[name="id"]');
+    let qtyInput = document.querySelector('.qty-input__input');
+     
+    if (variantSelector && qtyInput) {
+      variantSelector.addEventListener('change', function() {
+       
+        let variantId = this.value;
+       
 
+        if (variantId && metaData[variantId] !== undefined) {
+          let moq = metaData[variantId];
+          qtyInput.min = moq;
+          qtyInput.value = moq;
+          // console.log("Setting MOQ:", moq);
+        } else {
+          qtyInput.min = 1;
+          qtyInput.value = 1;
+          console.log("Setting default MOQ (Else branch)");
+        }
+      });
+
+      qtyInput.addEventListener('input', function(event) {
+      
+        let currentQty = parseInt(event.target.value);
+        console.log("event.target.value:", event.target.value);
+        
+        // Clear any existing timeout
+        clearTimeout(qtyInput.timeoutId);
+        
+        // Set a new timeout to validate the quantity after a delay
+        qtyInput.timeoutId = setTimeout(function() {
+       console.log("setTimeout Run:", event.target.value);
+
+          if (currentQty < parseInt(qtyInput.min)) {
+            alert(`Minimum order quantity is ${qtyInput.min} for this product `);
+            qtyInput.value = qtyInput.min;
+          }
+        }, 1000); // Delay of 1 second (1000 milliseconds)
+      });
+
+      // Trigger change event on page load to set initial MOQ
+
+      let event = new Event('change');
+      variantSelector.dispatchEvent(event);
+    }
+  });
+</script>
 {% schema %}
 {
   "name": "Product",

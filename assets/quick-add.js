@@ -189,6 +189,56 @@ if (!customElements.get('quick-add-drawer')) {
 
       this.fetch = null;
 
+      // custom script for quick view drawer quantity
+      const url = `${window.location.origin}${opener.dataset.productUrl}?view=quickmoq`;
+      let variantSelector = document.querySelector('quick-add-drawer input[name="id"]');
+      let qtyInput = document.querySelector('quick-add-drawer .qty-input__input');
+      fetch(url)
+        .then(response => response.json())
+        .then(repos => {
+          
+          if (variantSelector && qtyInput) {
+            variantSelector.addEventListener('change', function() {
+              let variantId = this.value;
+              // console.log(repos[variantId]);
+              if (variantId && repos[variantId] !== undefined) {
+                let moq = repos[variantId];
+                qtyInput.min = moq;
+                qtyInput.value = moq;
+                // console.log("Setting MOQ:", moq);
+              } else {
+                qtyInput.min = 1;
+                qtyInput.value = 1;
+                //  console.log("Setting default MOQ (Else branch)");
+              }
+            });
+      
+           qtyInput.addEventListener('input', function(event) {
+      
+        let currentQty = parseInt(event.target.value);
+        console.log("event.target.value:", event.target.value);
+        
+        // Clear any existing timeout
+        clearTimeout(qtyInput.timeoutId);
+        
+        // Set a new timeout to validate the quantity after a delay
+        qtyInput.timeoutId = setTimeout(function() {
+       console.log("setTimeout Run:", event.target.value);
+
+          if (currentQty < parseInt(qtyInput.min)) {
+            alert(`Minimum order quantity is ${qtyInput.min} for this product `);
+            qtyInput.value = qtyInput.min;
+          }
+        }, 1000); // Delay of 1 second (1000 milliseconds)
+      });
+      
+            // Trigger change event on page load to set initial MOQ
+            let event = new Event('change');
+            variantSelector.dispatchEvent(event);
+          }
+          
+        });
+
       opener.removeAttribute('aria-disabled');
     }
 

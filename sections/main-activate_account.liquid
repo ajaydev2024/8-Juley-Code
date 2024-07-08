@@ -34,10 +34,10 @@
                id="password"
                name="customer[password]"
                autocomplete="new-password"
-               {%- if form.errors contains 'password' %}
-                 aria-invalid="true"
-                 aria-describedby="password-error"
-               {%- endif %}
+          {%- if form.errors contains 'password' %}
+            aria-invalid="true"
+            aria-describedby="password-error"
+          {%- endif %}
                aria-required="true"
                required>
         {%- if form.errors contains 'password' -%}
@@ -57,10 +57,10 @@
                id="password-confirm"
                name="customer[password_confirmation]"
                autocomplete="new-password"
-               {%- if form.errors contains 'password' %}
-                 aria-invalid="true"
-                 aria-describedby="password-confirm-error"
-               {%- endif %}
+          {%- if form.errors contains 'password' %}
+            aria-invalid="true"
+            aria-describedby="password-confirm-error"
+          {%- endif %}
                aria-required="true"
                required>
         {%- if form.errors contains 'password_confirmation' -%}

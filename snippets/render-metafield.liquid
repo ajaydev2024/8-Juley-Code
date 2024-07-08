@@ -83,3 +83,36 @@
 {% if variant.id %} </span>{% endif %}
 
 
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  // Select all parent div elements with the class "product-spec__value"
+  const productSpecValues = document.querySelectorAll('.product-spec__value');
+
+  productSpecValues.forEach(function(div) {
+    // Find the span with class "metafield-single_line_text_field" or "metafield-multi_line_text_field" inside each parent div
+    const metafieldSingleLineSpan = div.querySelector('.metafield-single_line_text_field');
+    const metafieldMultiLineSpan = div.querySelector('.metafield-multi_line_text_field');
+    
+    let content = '';
+
+    if (metafieldSingleLineSpan) {
+      // Get the text content of the span
+      content = metafieldSingleLineSpan.textContent.trim();
+    } else if (metafieldMultiLineSpan) {
+      // Get the text content of the span
+      content = metafieldMultiLineSpan.textContent.trim();
+    }
+
+    // Check if the content contains "cm" or "kg"
+    if (content.includes('cm') || content.includes('kg') ) {
+      // Remove the "capitalize" class from the parent div
+      div.classList.remove('capitalize');
+    }
+    // if (content.includes('lx') || content.includes('wx') ){ 
+    //   div.classList.add('uppercase');
+    // }
+  });
+});
+</script>
